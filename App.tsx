@@ -16,6 +16,13 @@ const ratioConf = {
   relationship: { waterMl: 16, coffeeG: 1 },
 };
 
+const numberToStringOrEmpty = (num: number): string => {
+  if (isNaN(num)) {
+    return "";
+  }
+  return num.toFixed(2);
+};
+
 function App() {
   const [waterAmount, setWaterAmount] = useState<string>("");
   const [coffeeAmount, setCoffeeAmount] = useState<string>("");
@@ -23,17 +30,29 @@ function App() {
 
   const onCoffeeAmountChange = (value: string) => {
     setCoffeeAmount(value);
-    setWaterAmount(calculateWaterFromCoffee(parseInt(value), ratioConf) + "");
+    setWaterAmount(
+      numberToStringOrEmpty(
+        calculateWaterFromCoffee(parseInt(value), ratioConf)
+      )
+    );
     setGroundsAmount(
-      calculateGroundsFromCoffee(parseInt(value), ratioConf) + ""
+      numberToStringOrEmpty(
+        calculateGroundsFromCoffee(parseInt(value), ratioConf)
+      )
     );
   };
 
   const onWaterAmountChange = (value: string) => {
     setWaterAmount(value);
-    setCoffeeAmount(calculateCoffeeFromWater(parseInt(value), ratioConf) + "");
+    setCoffeeAmount(
+      numberToStringOrEmpty(
+        calculateCoffeeFromWater(parseInt(value), ratioConf)
+      )
+    );
     setGroundsAmount(
-      calculateGroundsFromWater(parseInt(value), ratioConf) + ""
+      numberToStringOrEmpty(
+        calculateGroundsFromWater(parseInt(value), ratioConf)
+      )
     );
   };
 
@@ -41,9 +60,15 @@ function App() {
     setGroundsAmount(value);
 
     setCoffeeAmount(
-      calculateCoffeeFromGrounds(parseInt(value), ratioConf) + ""
+      numberToStringOrEmpty(
+        calculateCoffeeFromGrounds(parseInt(value), ratioConf)
+      )
     );
-    setWaterAmount(calculateWaterFromGrounds(parseInt(value), ratioConf) + "");
+    setWaterAmount(
+      numberToStringOrEmpty(
+        calculateWaterFromGrounds(parseInt(value), ratioConf)
+      )
+    );
   };
 
   return (
@@ -57,6 +82,7 @@ function App() {
           onWaterAmountChange(e.currentTarget.value)
         }
         pattern="[0-9]+([\.,][0-9]+)?"
+        placeholder={"ml/g"}
       />
 
       <LabeledInput
@@ -66,6 +92,7 @@ function App() {
         value={coffeeAmount}
         onChange={(e) => onCoffeeAmountChange(e.currentTarget.value)}
         pattern="[0-9]+([\.,][0-9]+)?"
+        placeholder={"ml/g"}
       />
 
       <LabeledInput
@@ -75,6 +102,7 @@ function App() {
         value={groundsAmount}
         onChange={(e) => onGroundsAmountChange(e.currentTarget.value)}
         pattern="[0-9]+([\.,][0-9]+)?"
+        placeholder={"g"}
       />
     </>
   );

@@ -1,0 +1,33 @@
+.wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    align-items: end;
+    justify-items: start;
+}
+
+.label,
+.input {
+    grid-row-start: 1;
+    grid-row-end: 2;
+    grid-column-start: 1;
+    grid-column-end: 2;
+
+}
+
+.label {
+    font-size: clamp(2rem,15vw,4rem);
+    padding: 2rem 0 clamp( 3.2rem, calc(8vw + 1.2rem), 4.2rem) 2vw;
+    font-weight: 900;
+}
+
+.input {
+    padding: 1rem 3rem;
+    width: 7ch;
+    color: var(--black-bean);
+    font-size: clamp(1.6rem,8vw,3rem)
+}
+
+.input::placeholder {
+    color: var(--rose-quarts);
+}
