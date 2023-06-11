@@ -1,111 +1,56 @@
-import { ChangeEvent, useState } from "react";
-import "./App.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Root, {
+  loader as rootLoader,
+  action as rootAction,
+} from "./routes/root.tsx";
+import ErrorPage from "./error-page.tsx";
+import Receipt, {
+  loader as receiptLoader,
+  action as receiptAction,
+} from "./routes/receipt.tsx";
+import Edit, {
+  loader as editLoader,
+  action as editAction,
+} from "./routes/edit.tsx";
+import { action as destroyAction } from "./routes/destroy.tsx";
+import Index from "./routes";
 
-import {
-  calculateWaterFromCoffee,
-  calculateGroundsFromCoffee,
-  calculateCoffeeFromGrounds,
-  calculateWaterFromGrounds,
-  calculateCoffeeFromWater,
-  calculateGroundsFromWater,
-} from "coffeemathlib/RatioCalculator";
-import LabeledInput from "./components/LabeledInput.tsx";
-
-const ratioConf = {
-  waterInGroundCoffeeCapacity: 2.2,
-  relationship: { waterMl: 16, coffeeG: 1 },
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Root />,
+    loader: rootLoader,
+    action: rootAction,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        errorElement: <ErrorPage />,
+        children: [
+          { index: true, element: <Index /> },
+          {
+            element: <Receipt />,
+            loader: receiptLoader,
+            path: "/receipt/:receiptId",
+            action: receiptAction,
+          },
+          {
+            path: "/receipt/:receiptId/edit",
+            element: <Edit />,
+            loader: editLoader,
+            action: editAction,
+          },
+          {
+            path: "/receipt/:receiptId/destroy",
+            action: destroyAction,
+            errorElement: <div>Deletion failed!</div>,
+          },
+        ],
+      },
+    ],
+  },
+]);
+const App = () => {
+  return <RouterProvider router={router} />;
 };
-
-const numberToStringOrEmpty = (num: number): string => {
-  if (isNaN(num)) {
-    return "";
-  }
-  return num.toFixed(2);
-};
-
-function App() {
-  const [waterAmount, setWaterAmount] = useState<string>("");
-  const [coffeeAmount, setCoffeeAmount] = useState<string>("");
-  const [groundsAmount, setGroundsAmount] = useState<string>("");
-
-  const onCoffeeAmountChange = (value: string) => {
-    setCoffeeAmount(value);
-    setWaterAmount(
-      numberToStringOrEmpty(
-        calculateWaterFromCoffee(parseInt(value), ratioConf)
-      )
-    );
-    setGroundsAmount(
-      numberToStringOrEmpty(
-        calculateGroundsFromCoffee(parseInt(value), ratioConf)
-      )
-    );
-  };
-
-  const onWaterAmountChange = (value: string) => {
-    setWaterAmount(value);
-    setCoffeeAmount(
-      numberToStringOrEmpty(
-        calculateCoffeeFromWater(parseInt(value), ratioConf)
-      )
-    );
-    setGroundsAmount(
-      numberToStringOrEmpty(
-        calculateGroundsFromWater(parseInt(value), ratioConf)
-      )
-    );
-  };
-
-  const onGroundsAmountChange = (value: string) => {
-    setGroundsAmount(value);
-
-    setCoffeeAmount(
-      numberToStringOrEmpty(
-        calculateCoffeeFromGrounds(parseInt(value), ratioConf)
-      )
-    );
-    setWaterAmount(
-      numberToStringOrEmpty(
-        calculateWaterFromGrounds(parseInt(value), ratioConf)
-      )
-    );
-  };
-
-  return (
-    <>
-      <LabeledInput
-        id={"waterAmount"}
-        label={"Water"}
-        type={"text"}
-        value={waterAmount}
-        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-          onWaterAmountChange(e.currentTarget.value)
-        }
-        pattern="[0-9]+([\.,][0-9]+)?"
-        placeholder={"ml/g"}
-      />
-
-      <LabeledInput
-        id={"coffeeAmount"}
-        label={"Coffee"}
-        type={"text"}
-        value={coffeeAmount}
-        onChange={(e) => onCoffeeAmountChange(e.currentTarget.value)}
-        pattern="[0-9]+([\.,][0-9]+)?"
-        placeholder={"ml/g"}
-      />
-
-      <LabeledInput
-        label={"Grounds"}
-        id={"groundsAmount"}
-        type={"text"}
-        value={groundsAmount}
-        onChange={(e) => onGroundsAmountChange(e.currentTarget.value)}
-        pattern="[0-9]+([\.,][0-9]+)?"
-        placeholder={"g"}
-      />
-    </>
-  );
-}
 
 export default App;
