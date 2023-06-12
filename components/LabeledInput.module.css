@@ -16,16 +16,15 @@
 }
 
 .label {
-    font-size: clamp(2rem,15vw,4rem);
+    font-size: clamp(1rem,7vw,2rem);
     padding: 2rem 0 clamp( 3.2rem, calc(8vw + 1.2rem), 4.2rem) 2vw;
     font-weight: 900;
 }
 
 .input {
-    padding: 1rem 3rem;
-    width: 7ch;
+    padding: 1rem 1rem;
     color: var(--black-bean);
-    font-size: clamp(1.6rem,8vw,3rem)
+    font-size: clamp(.8rem,4vw,1.5rem)
 }
 
 .input::placeholder {

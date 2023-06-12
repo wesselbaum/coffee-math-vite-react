@@ -1,5 +1,5 @@
-import { ChangeEvent, useState } from "react";
-import "../App.css";
+import { ChangeEvent, useEffect, useState } from "react";
+// import "../App.css";
 
 import {
   calculateWaterFromCoffee,
@@ -8,6 +8,7 @@ import {
   calculateWaterFromGrounds,
   calculateCoffeeFromWater,
   calculateGroundsFromWater,
+  RatioConf,
 } from "coffeemathlib/RatioCalculator";
 import LabeledInput from "../components/LabeledInput.tsx";
 
@@ -16,6 +17,10 @@ const defaultRatioConf = {
   relationship: { waterMl: 16, coffeeG: 1 },
 };
 
+interface CalculatorProps {
+  ratioConf?: RatioConf;
+}
+
 const numberToStringOrEmpty = (num: number): string => {
   if (isNaN(num)) {
     return "";
@@ -23,21 +28,29 @@ const numberToStringOrEmpty = (num: number): string => {
   return num.toFixed(2);
 };
 
-function Calculator() {
+function Calculator({ ratioConf }: CalculatorProps) {
   const [waterAmount, setWaterAmount] = useState<string>("");
   const [coffeeAmount, setCoffeeAmount] = useState<string>("");
   const [groundsAmount, setGroundsAmount] = useState<string>("");
+
+  const definitiveRatioConf = ratioConf ?? defaultRatioConf;
+
+  useEffect(() => {
+    setCoffeeAmount("");
+    setWaterAmount("");
+    setGroundsAmount("");
+  }, [ratioConf]);
 
   const onCoffeeAmountChange = (value: string) => {
     setCoffeeAmount(value);
     setWaterAmount(
       numberToStringOrEmpty(
-        calculateWaterFromCoffee(parseInt(value), defaultRatioConf)
+        calculateWaterFromCoffee(parseInt(value), definitiveRatioConf)
       )
     );
     setGroundsAmount(
       numberToStringOrEmpty(
-        calculateGroundsFromCoffee(parseInt(value), defaultRatioConf)
+        calculateGroundsFromCoffee(parseInt(value), definitiveRatioConf)
       )
     );
   };
@@ -46,12 +59,12 @@ function Calculator() {
     setWaterAmount(value);
     setCoffeeAmount(
       numberToStringOrEmpty(
-        calculateCoffeeFromWater(parseInt(value), defaultRatioConf)
+        calculateCoffeeFromWater(parseInt(value), definitiveRatioConf)
       )
     );
     setGroundsAmount(
       numberToStringOrEmpty(
-        calculateGroundsFromWater(parseInt(value), defaultRatioConf)
+        calculateGroundsFromWater(parseInt(value), definitiveRatioConf)
       )
     );
   };
@@ -61,12 +74,12 @@ function Calculator() {
 
     setCoffeeAmount(
       numberToStringOrEmpty(
-        calculateCoffeeFromGrounds(parseInt(value), defaultRatioConf)
+        calculateCoffeeFromGrounds(parseInt(value), definitiveRatioConf)
       )
     );
     setWaterAmount(
       numberToStringOrEmpty(
-        calculateWaterFromGrounds(parseInt(value), defaultRatioConf)
+        calculateWaterFromGrounds(parseInt(value), definitiveRatioConf)
       )
     );
   };
@@ -84,7 +97,6 @@ function Calculator() {
         pattern="[0-9]+([\.,][0-9]+)?"
         placeholder={"ml/g"}
       />
-
       <LabeledInput
         id={"coffeeAmount"}
         label={"Coffee"}
@@ -94,7 +106,6 @@ function Calculator() {
         pattern="[0-9]+([\.,][0-9]+)?"
         placeholder={"ml/g"}
       />
-
       <LabeledInput
         label={"Grounds"}
         id={"groundsAmount"}

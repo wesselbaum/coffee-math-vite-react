@@ -9,7 +9,6 @@ export async function getReceipts(query?: string): Promise<ReceiptInterface[]> {
   if (query) {
     receipts = matchSorter(receipts, query, { keys: ["name"] });
   }
-  console.log(`getReceipts`, receipts);
   return receipts.sort(sortBy("last", "createdAt"));
 }
 

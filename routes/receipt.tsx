@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import { getReceipt, updateReceipt } from "../receipts.ts";
 import { ReceiptInterface } from "../lib/ReceiptInterface.ts";
+import Calculator from "./Calculator.tsx";
 
 export interface ReceiptParams {
   receiptId: string;
@@ -37,7 +38,6 @@ export default function Receipt() {
   //   favorite: true,
   // };
   const { receipt } = useLoaderData() as { receipt: ReceiptInterface };
-  console.log(`receipt loader data`, receipt);
 
   return (
     <div id="contact">
@@ -46,6 +46,16 @@ export default function Receipt() {
           {receipt.name ? <>{receipt.name}</> : <i>No Name</i>}{" "}
           <Favorite receipt={receipt} />
         </h1>
+
+        <p>
+          Water in grounds capacity:{" "}
+          <strong>{receipt.ratioConf.waterInGroundCoffeeCapacity}</strong>ml/g
+        </p>
+        <p>
+          Grounds to water ratio:{" "}
+          <strong>{receipt.ratioConf.relationship.coffeeG}</strong>g/
+          <strong>{receipt.ratioConf.relationship.waterMl}</strong>ml
+        </p>
 
         <div>
           <Form action="edit">
@@ -63,6 +73,8 @@ export default function Receipt() {
             <button type="submit">Delete</button>
           </Form>
         </div>
+
+        <Calculator ratioConf={receipt.ratioConf} />
       </div>
     </div>
   );

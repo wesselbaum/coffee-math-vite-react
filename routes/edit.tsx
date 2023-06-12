@@ -9,6 +9,7 @@ import {
 import { ReceiptInterface } from "../lib/ReceiptInterface.ts";
 import { getReceipt, updateReceipt } from "../receipts.ts";
 import { ReceiptParams } from "./receipt.tsx";
+import Calculator from "./Calculator.tsx";
 
 export async function loader({ params }: { params: Params<string> }) {
   if (params) {
@@ -20,9 +21,23 @@ export async function loader({ params }: { params: Params<string> }) {
   return null;
 }
 
+const mapUpdateToReceipt = (updates: any): Partial<ReceiptInterface> => {
+  return {
+    name: updates.name,
+    ratioConf: {
+      waterInGroundCoffeeCapacity: updates.waterInGroundCoffeeCapacity,
+      relationship: {
+        waterMl: updates.waterMl,
+        coffeeG: updates.coffeeG,
+      },
+    },
+  };
+};
+
 export async function action({ request, params }: ActionFunctionArgs) {
   const formData = await request.formData();
-  const updates = Object.fromEntries(formData);
+  const updates = mapUpdateToReceipt(Object.fromEntries(formData));
+
   if (params.receiptId) {
     await updateReceipt(params.receiptId, updates);
     return redirect(`/receipt/${params.receiptId}`);
@@ -43,6 +58,39 @@ export default function EditContact() {
           type="text"
           name="name"
           defaultValue={receipt.name}
+        />
+      </p>
+      <p>
+        <span>Grounds capacity</span>
+        <input
+          placeholder="2.2g"
+          aria-label="Water in ground coffee capacity"
+          type="number"
+          step={0.1}
+          name="waterInGroundCoffeeCapacity"
+          defaultValue={receipt.ratioConf.waterInGroundCoffeeCapacity}
+        />
+      </p>
+      <p>
+        <span>Relationship grounds</span>
+        <input
+          placeholder="1"
+          aria-label="Amount of grounds"
+          type="number"
+          step={1}
+          name="coffeeG"
+          defaultValue={receipt.ratioConf.relationship.coffeeG}
+        />
+      </p>
+      <p>
+        <span>to water ml</span>
+        <input
+          placeholder="16"
+          aria-label="Amount of Water"
+          type="number"
+          step={1}
+          name="waterMl"
+          defaultValue={receipt.ratioConf.relationship.waterMl}
         />
       </p>
 
