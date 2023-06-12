@@ -8,8 +8,7 @@ import {
   useNavigation,
   useSubmit,
 } from "react-router-dom";
-import { createReceipt, getReceipts } from "../receipts.ts";
-import { ReceiptInterface } from "../lib/ReceiptInterface.ts";
+import { Receipts, createReceipt, getReceipts } from "../lib/receipts.ts";
 import { useEffect, useRef } from "react";
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -28,7 +27,7 @@ export async function action() {
 
 export default function Root() {
   const { receipts, q } = useLoaderData() as {
-    receipts: ReceiptInterface[];
+    receipts: Receipts[];
     q: string;
   };
   const navigation = useNavigation();

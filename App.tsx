@@ -14,6 +14,10 @@ import Edit, {
 } from "./routes/edit.tsx";
 import { action as destroyAction } from "./routes/destroy.tsx";
 import Index from "./routes";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import "./App.css";
 
 const router = createBrowserRouter([
   {
@@ -53,4 +57,8 @@ const App = () => {
   return <RouterProvider router={router} />;
 };
 
-export default App;
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);

@@ -1,10 +1,17 @@
+import { RatioConf } from "coffeemathlib/RatioCalculator";
 import localforage from "localforage";
 import { matchSorter } from "match-sorter";
 import sortBy from "sort-by";
-import { ReceiptInterface } from "./lib/ReceiptInterface.ts";
 
-export async function getReceipts(query?: string): Promise<ReceiptInterface[]> {
-  let receipts = (await localforage.getItem("receipts")) as ReceiptInterface[];
+export interface Receipts {
+  name: string;
+  id: string;
+  favorite: boolean;
+  ratioConf: RatioConf;
+}
+
+export async function getReceipts(query?: string): Promise<Receipts[]> {
+  let receipts = (await localforage.getItem("receipts")) as Receipts[];
   if (!receipts) receipts = [];
   if (query) {
     receipts = matchSorter(receipts, query, { keys: ["name"] });
@@ -14,9 +21,8 @@ export async function getReceipts(query?: string): Promise<ReceiptInterface[]> {
 
 export async function createReceipt() {
   const id = Math.random().toString(36).substring(2, 9);
-  const receipt: ReceiptInterface = {
+  const receipt: Receipts = {
     id,
-    createdAt: Date.now(),
     favorite: false,
     ratioConf: {
       waterInGroundCoffeeCapacity: 2.2,
@@ -31,17 +37,13 @@ export async function createReceipt() {
 }
 
 export async function getReceipt(id: string) {
-  const receipts = (await localforage.getItem(
-    "receipts"
-  )) as ReceiptInterface[];
+  const receipts = (await localforage.getItem("receipts")) as Receipts[];
   const receipt = receipts.find((receipt) => receipt.id === id);
   return receipt ?? null;
 }
 
-export async function updateReceipt(id: string, updates) {
-  const receipts = (await localforage.getItem(
-    "receipts"
-  )) as ReceiptInterface[];
+export async function updateReceipt(id: string, updates: Partial<Receipts>) {
+  const receipts = (await localforage.getItem("receipts")) as Receipts[];
   const receipt = receipts.find((receipt) => receipt.id === id);
   if (!receipt) throw new Error(`No receipt found for ${id}`);
   Object.assign(receipt, updates);
@@ -50,9 +52,7 @@ export async function updateReceipt(id: string, updates) {
 }
 
 export async function deleteReceipt(id: string) {
-  const receipts = (await localforage.getItem(
-    "receipts"
-  )) as ReceiptInterface[];
+  const receipts = (await localforage.getItem("receipts")) as Receipts[];
   const index = receipts.findIndex((receipt) => receipt.id === id);
   if (index > -1) {
     receipts.splice(index, 1);
@@ -62,6 +62,6 @@ export async function deleteReceipt(id: string) {
   return false;
 }
 
-function set(receipts: ReceiptInterface[]) {
+function set(receipts: Receipts[]) {
   return localforage.setItem("receipts", receipts);
 }

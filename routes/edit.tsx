@@ -6,10 +6,8 @@ import {
   useLoaderData,
   useNavigate,
 } from "react-router-dom";
-import { ReceiptInterface } from "../lib/ReceiptInterface.ts";
-import { getReceipt, updateReceipt } from "../receipts.ts";
+import { Receipts, getReceipt, updateReceipt } from "../lib/receipts.ts";
 import { ReceiptParams } from "./receipt.tsx";
-import Calculator from "./Calculator.tsx";
 
 export async function loader({ params }: { params: Params<string> }) {
   if (params) {
@@ -21,7 +19,7 @@ export async function loader({ params }: { params: Params<string> }) {
   return null;
 }
 
-const mapUpdateToReceipt = (updates: any): Partial<ReceiptInterface> => {
+const mapUpdateToReceipt = (updates: any): Partial<Receipts> => {
   return {
     name: updates.name,
     ratioConf: {
@@ -45,7 +43,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 }
 
 export default function EditContact() {
-  const { receipt } = useLoaderData() as { receipt: ReceiptInterface };
+  const { receipt } = useLoaderData() as { receipt: Receipts };
   const navigate = useNavigate();
 
   return (
@@ -53,7 +51,7 @@ export default function EditContact() {
       <p>
         <span>Name</span>
         <input
-          placeholder="Receipt name"
+          placeholder="Receipts name"
           aria-label="Name"
           type="text"
           name="name"
