@@ -3,15 +3,15 @@ import localforage from "localforage";
 import { matchSorter } from "match-sorter";
 import sortBy from "sort-by";
 
-export interface Receipts {
+export interface ReceiptObject {
   name: string;
   id: string;
   favorite: boolean;
   ratioConf: RatioConf;
 }
 
-export async function getReceipts(query?: string): Promise<Receipts[]> {
-  let receipts = (await localforage.getItem("receipts")) as Receipts[];
+export async function getReceipts(query?: string): Promise<ReceiptObject[]> {
+  let receipts = (await localforage.getItem("receipts")) as ReceiptObject[];
   if (!receipts) receipts = [];
   if (query) {
     receipts = matchSorter(receipts, query, { keys: ["name"] });
@@ -21,7 +21,7 @@ export async function getReceipts(query?: string): Promise<Receipts[]> {
 
 export async function createReceipt() {
   const id = Math.random().toString(36).substring(2, 9);
-  const receipt: Receipts = {
+  const receipt: ReceiptObject = {
     id,
     favorite: false,
     ratioConf: {
@@ -37,13 +37,16 @@ export async function createReceipt() {
 }
 
 export async function getReceipt(id: string) {
-  const receipts = (await localforage.getItem("receipts")) as Receipts[];
+  const receipts = (await localforage.getItem("receipts")) as ReceiptObject[];
   const receipt = receipts.find((receipt) => receipt.id === id);
   return receipt ?? null;
 }
 
-export async function updateReceipt(id: string, updates: Partial<Receipts>) {
-  const receipts = (await localforage.getItem("receipts")) as Receipts[];
+export async function updateReceipt(
+  id: string,
+  updates: Partial<ReceiptObject>
+) {
+  const receipts = (await localforage.getItem("receipts")) as ReceiptObject[];
   const receipt = receipts.find((receipt) => receipt.id === id);
   if (!receipt) throw new Error(`No receipt found for ${id}`);
   Object.assign(receipt, updates);
@@ -52,7 +55,7 @@ export async function updateReceipt(id: string, updates: Partial<Receipts>) {
 }
 
 export async function deleteReceipt(id: string) {
-  const receipts = (await localforage.getItem("receipts")) as Receipts[];
+  const receipts = (await localforage.getItem("receipts")) as ReceiptObject[];
   const index = receipts.findIndex((receipt) => receipt.id === id);
   if (index > -1) {
     receipts.splice(index, 1);
@@ -62,6 +65,6 @@ export async function deleteReceipt(id: string) {
   return false;
 }
 
-function set(receipts: Receipts[]) {
+function set(receipts: ReceiptObject[]) {
   return localforage.setItem("receipts", receipts);
 }

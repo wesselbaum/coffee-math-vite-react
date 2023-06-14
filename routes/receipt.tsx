@@ -5,7 +5,11 @@ import {
   useFetcher,
   useLoaderData,
 } from "react-router-dom";
-import { Receipts, getReceipt, updateReceipt } from "../lib/receipts.ts";
+import {
+  ReceiptObject,
+  getReceipt,
+  updateReceipt,
+} from "../lib/receiptObject.ts";
 import Calculator from "./Calculator.tsx";
 
 export interface ReceiptParams {
@@ -36,7 +40,7 @@ export default function Receipt() {
   //   name: "name",
   //   favorite: true,
   // };
-  const { receipt } = useLoaderData() as { receipt: Receipts };
+  const { receipt } = useLoaderData() as { receipt: ReceiptObject };
 
   return (
     <div id="contact">
@@ -79,7 +83,7 @@ export default function Receipt() {
   );
 }
 
-function Favorite({ receipt }: { receipt: Receipts }) {
+function Favorite({ receipt }: { receipt: ReceiptObject }) {
   const fetcher = useFetcher();
 
   const favorite = receipt.favorite;

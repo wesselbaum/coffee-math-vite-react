@@ -6,7 +6,11 @@ import {
   useLoaderData,
   useNavigate,
 } from "react-router-dom";
-import { Receipts, getReceipt, updateReceipt } from "../lib/receipts.ts";
+import {
+  ReceiptObject,
+  getReceipt,
+  updateReceipt,
+} from "../lib/receiptObject.ts";
 import { ReceiptParams } from "./receipt.tsx";
 
 export async function loader({ params }: { params: Params<string> }) {
@@ -19,7 +23,7 @@ export async function loader({ params }: { params: Params<string> }) {
   return null;
 }
 
-const mapUpdateToReceipt = (updates: any): Partial<Receipts> => {
+const mapUpdateToReceipt = (updates: any): Partial<ReceiptObject> => {
   return {
     name: updates.name,
     ratioConf: {
@@ -43,7 +47,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 }
 
 export default function EditContact() {
-  const { receipt } = useLoaderData() as { receipt: Receipts };
+  const { receipt } = useLoaderData() as { receipt: ReceiptObject };
   const navigate = useNavigate();
 
   return (

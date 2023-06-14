@@ -1,25 +1,31 @@
-import { InputHTMLAttributes } from "react";
+import { HTMLAttributes } from "react";
 import {
   FormControl,
   FormErrorMessage,
   FormLabel,
-  Input,
+  NumberInput,
 } from "@chakra-ui/react";
 
-// import labeledInlineStyle from "./LabeledInput.module.css";
-export interface LabeledInputProps
-  extends InputHTMLAttributes<HTMLInputElement> {
+export type LabeledInputProps = Omit<
+  HTMLAttributes<HTMLElement>,
+  "onChange"
+> & {
   label: string;
-}
+  onChange: (value: string) => void;
+};
 
 function LabeledInput({ label, id, ...props }: LabeledInputProps) {
   return (
     <div className={""} style={{ border: "1px solid red" }}>
       <FormControl variant="floating" isRequired>
-        <Input
+        <NumberInput
           placeholder=" "
           className={props.className}
-          onChange={props.onChange}
+          onChange={(valueAsString) => {
+            if (props.onChange) {
+              props.onChange(valueAsString);
+            }
+          }}
           id={id}
         />
         <FormLabel>{label}</FormLabel>
