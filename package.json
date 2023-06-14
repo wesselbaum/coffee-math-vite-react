@@ -12,7 +12,11 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.7.0",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "coffeemathlib": "^1.1.0",
+    "framer-motion": "^10.12.16",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
     "react": "^18.2.0",
