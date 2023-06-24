@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 import {
   Form,
-  NavLink,
   useLoaderData,
   useNavigation,
   useSubmit,
@@ -85,9 +84,9 @@ function Sidebar() {
               <hr />
             </div>
             {receipts.length ? (
-              <List marginY={4} spacing={3}>
+              <List marginY={4} spacing={3} key={"x"}>
                 {receipts.map((receipt) => (
-                  <ListItem key={receipt.id}>
+                  <ListItem key={receipt.id + "xa"}>
                     {/*<NavLink
                       to={`receipt/${receipt.id}`}
                       className={({ isActive, isPending }) =>

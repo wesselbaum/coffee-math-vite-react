@@ -1,4 +1,3 @@
-import React from "react";
 import { NavLink } from "react-router-dom";
 import { ReceiptObject } from "../../lib/receiptObject.ts";
 
@@ -9,6 +8,8 @@ export interface SidebarListLinkProps {
 }
 
 function SidebarListLink({ receipt, onClose }: SidebarListLinkProps) {
+  console.log(`receipt`, receipt);
+
   return (
     <NavLink
       to={`receipt/${receipt.id}`}
@@ -17,7 +18,13 @@ function SidebarListLink({ receipt, onClose }: SidebarListLinkProps) {
       }
       onClick={onClose}
     >
-      {receipt.name ? <>{receipt.name}</> : <i>Unnamed</i>}{" "}
+      {receipt.name ? (
+        <>
+          {receipt.name} <small>{receipt.id}</small>
+        </>
+      ) : (
+        <i>Unnamed</i>
+      )}{" "}
       {receipt.favorite && <span>★</span>}
     </NavLink>
   );

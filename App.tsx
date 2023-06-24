@@ -19,6 +19,7 @@ import ReactDOM from "react-dom/client";
 // import "./index.css";
 // import "./App.css";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import "./firebase.ts";
 
 const router = createBrowserRouter([
   {
