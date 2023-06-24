@@ -5,7 +5,7 @@ import {
   useNavigation,
   useSubmit,
 } from "react-router-dom";
-import { ReceiptObject } from "../../lib/receiptObject.ts";
+import { ReipeObject } from "../../lib/reipeObject.ts";
 import {
   Button,
   Drawer,
@@ -24,8 +24,8 @@ import {
 import SidebarListLink from "./SidebarListLink.tsx";
 
 function Sidebar() {
-  const { receipts, q } = useLoaderData() as {
-    receipts: ReceiptObject[];
+  const { recipes, q } = useLoaderData() as {
+    recipes: ReipeObject[];
     q: string;
   };
 
@@ -46,7 +46,7 @@ function Sidebar() {
   return (
     <>
       <Button m={4} ref={btnRef} colorScheme="teal" onClick={onOpen}>
-        Receipts
+        Recipes
       </Button>
 
       <Drawer
@@ -58,7 +58,7 @@ function Sidebar() {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>Your Receipts</DrawerHeader>
+          <DrawerHeader>Your Recipes</DrawerHeader>
 
           <DrawerBody>
             <div>
@@ -83,31 +83,17 @@ function Sidebar() {
               </Form>
               <hr />
             </div>
-            {receipts.length ? (
+            {recipes.length ? (
               <List marginY={4} spacing={3} key={"x"}>
-                {receipts.map((receipt) => (
-                  <ListItem key={receipt.id + "xa"}>
-                    {/*<NavLink
-                      to={`receipt/${receipt.id}`}
-                      className={({ isActive, isPending }) =>
-                        isActive
-                          ? "navLink active"
-                          : isPending
-                          ? "navLink pending"
-                          : "navLink"
-                      }
-                      onClick={onClose}
-                    >
-                      {receipt.name ? <>{receipt.name}</> : <i>Unnamed</i>}{" "}
-                      {receipt.favorite && <span>★</span>}
-                    </NavLink>*/}
-                    <SidebarListLink receipt={receipt} onClose={onClose} />
+                {recipes.map((recipes) => (
+                  <ListItem key={recipes.id + "xa"}>
+                    <SidebarListLink recipe={recipes} onClose={onClose} />
                   </ListItem>
                 ))}
               </List>
             ) : (
               <Text>
-                <i>No receipts</i>
+                <i>No recipes</i>
               </Text>
             )}
           </DrawerBody>
@@ -119,7 +105,7 @@ function Sidebar() {
                 type={"submit"}
                 onClick={onClose}
               >
-                New Receipt
+                New Recipe
               </Button>
             </Form>
           </DrawerFooter>

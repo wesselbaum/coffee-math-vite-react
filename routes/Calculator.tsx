@@ -1,5 +1,4 @@
 import { ChangeEvent, useEffect, useState } from "react";
-// import "../App.css";
 
 import {
   calculateWaterFromCoffee,

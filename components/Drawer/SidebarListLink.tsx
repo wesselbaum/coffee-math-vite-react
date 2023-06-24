@@ -1,31 +1,28 @@
 import { NavLink } from "react-router-dom";
-import { ReceiptObject } from "../../lib/receiptObject.ts";
+import { ReipeObject } from "../../lib/reipeObject.ts";
 
 export interface SidebarListLinkProps {
-  receipt: ReceiptObject;
+  recipe: ReipeObject;
   onClose: () => void;
-  // onClose: string;
 }
 
-function SidebarListLink({ receipt, onClose }: SidebarListLinkProps) {
-  console.log(`receipt`, receipt);
-
+function SidebarListLink({ recipe, onClose }: SidebarListLinkProps) {
   return (
     <NavLink
-      to={`receipt/${receipt.id}`}
+      to={`recipe/${recipe.id}`}
       className={({ isActive, isPending }) =>
         isActive ? "navLink active" : isPending ? "navLink pending" : "navLink"
       }
       onClick={onClose}
     >
-      {receipt.name ? (
+      {recipe.name ? (
         <>
-          {receipt.name} <small>{receipt.id}</small>
+          {recipe.name} <small>{recipe.id}</small>
         </>
       ) : (
         <i>Unnamed</i>
       )}{" "}
-      {receipt.favorite && <span>★</span>}
+      {recipe.favorite && <span>★</span>}
     </NavLink>
   );
 }

@@ -5,59 +5,51 @@ import {
   useFetcher,
   useLoaderData,
 } from "react-router-dom";
-import {
-  ReceiptObject,
-  getReceipt,
-  updateReceipt,
-} from "../lib/receiptObject.ts";
+import { ReipeObject, getRecipe, updateRecipe } from "../lib/reipeObject.ts";
 import Calculator from "./Calculator.tsx";
 
-export interface ReceiptParams {
-  receiptId: string;
+export interface RecipeParams {
+  recipeId: string;
 }
 
 export async function loader({ params }: { params: Params<string> }) {
   if (params) {
-    const typedParams = params as unknown as ReceiptParams;
+    const typedParams = params as unknown as RecipeParams;
 
-    const receipt = await getReceipt(typedParams.receiptId);
-    return { receipt };
+    const recipe = await getRecipe(typedParams.recipeId);
+    return { recipe };
   }
   return null;
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
   const formData = await request.formData();
-  if (params.receiptId) {
-    return updateReceipt(params.receiptId, {
+  if (params.recipeId) {
+    return updateRecipe(params.recipeId, {
       favorite: formData.get("favorite") === "true",
     });
   }
 }
 
-export default function Receipt() {
-  // const receipt = {
-  //   name: "name",
-  //   favorite: true,
-  // };
-  const { receipt } = useLoaderData() as { receipt: ReceiptObject };
+export default function Recipe() {
+  const { recipe } = useLoaderData() as { recipe: ReipeObject };
 
   return (
     <div id="contact">
       <div>
         <h1>
-          {receipt.name ? <>{receipt.name}</> : <i>No Name</i>}{" "}
-          <Favorite receipt={receipt} />
+          {recipe.name ? <>{recipe.name}</> : <i>No Name</i>}{" "}
+          <Favorite recipe={recipe} />
         </h1>
 
         <p>
           Water in grounds capacity:{" "}
-          <strong>{receipt.ratioConf.waterInGroundCoffeeCapacity}</strong>ml/g
+          <strong>{recipe.ratioConf.waterInGroundCoffeeCapacity}</strong>ml/g
         </p>
         <p>
           Grounds to water ratio:{" "}
-          <strong>{receipt.ratioConf.relationship.coffeeG}</strong>g/
-          <strong>{receipt.ratioConf.relationship.waterMl}</strong>ml
+          <strong>{recipe.ratioConf.relationship.coffeeG}</strong>g/
+          <strong>{recipe.ratioConf.relationship.waterMl}</strong>ml
         </p>
 
         <div>
@@ -77,16 +69,16 @@ export default function Receipt() {
           </Form>
         </div>
 
-        <Calculator ratioConf={receipt.ratioConf} />
+        <Calculator ratioConf={recipe.ratioConf} />
       </div>
     </div>
   );
 }
 
-function Favorite({ receipt }: { receipt: ReceiptObject }) {
+function Favorite({ recipe }: { recipe: ReipeObject }) {
   const fetcher = useFetcher();
 
-  const favorite = receipt.favorite;
+  const favorite = recipe.favorite;
   return (
     <fetcher.Form method="post">
       <button

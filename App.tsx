@@ -4,10 +4,10 @@ import Root, {
   action as rootAction,
 } from "./routes/root.tsx";
 import ErrorPage from "./error-page.tsx";
-import Receipt, {
-  loader as receiptLoader,
-  action as receiptAction,
-} from "./routes/receipt.tsx";
+import Recipe, {
+  loader as recipeLoader,
+  action as recipeAction,
+} from "./routes/recipe.tsx";
 import Edit, {
   loader as editLoader,
   action as editAction,
@@ -16,8 +16,6 @@ import { action as destroyAction } from "./routes/destroy.tsx";
 import Index from "./routes";
 import React from "react";
 import ReactDOM from "react-dom/client";
-// import "./index.css";
-// import "./App.css";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import "./firebase.ts";
 
@@ -34,19 +32,19 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <Index /> },
           {
-            element: <Receipt />,
-            loader: receiptLoader,
-            path: "/receipt/:receiptId",
-            action: receiptAction,
+            element: <Recipe />,
+            loader: recipeLoader,
+            path: "/recipe/:recipeId",
+            action: recipeAction,
           },
           {
-            path: "/receipt/:receiptId/edit",
+            path: "/recipe/:recipeId/edit",
             element: <Edit />,
             loader: editLoader,
             action: editAction,
           },
           {
-            path: "/receipt/:receiptId/destroy",
+            path: "/recipe/:recipeId/destroy",
             action: destroyAction,
             errorElement: <div>Deletion failed!</div>,
           },

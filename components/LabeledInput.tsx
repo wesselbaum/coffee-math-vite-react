@@ -6,7 +6,6 @@ import {
   Input,
 } from "@chakra-ui/react";
 
-// import labeledInlineStyle from "./LabeledInput.module.css";
 export interface LabeledInputProps
   extends InputHTMLAttributes<HTMLInputElement> {
   label: string;

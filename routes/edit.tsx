@@ -6,24 +6,20 @@ import {
   useLoaderData,
   useNavigate,
 } from "react-router-dom";
-import {
-  ReceiptObject,
-  getReceipt,
-  updateReceipt,
-} from "../lib/receiptObject.ts";
-import { ReceiptParams } from "./receipt.tsx";
+import { ReipeObject, getRecipe, updateRecipe } from "../lib/reipeObject.ts";
+import { RecipeParams } from "./recipe.tsx";
 
 export async function loader({ params }: { params: Params<string> }) {
   if (params) {
-    const typedParams = params as unknown as ReceiptParams;
+    const typedParams = params as unknown as RecipeParams;
 
-    const receipt = await getReceipt(typedParams.receiptId);
-    return { receipt };
+    const recipe = await getRecipe(typedParams.recipeId);
+    return { recipe };
   }
   return null;
 }
 
-const mapUpdateToReceipt = (updates: any): Partial<ReceiptObject> => {
+const mapUpdateToRecipe = (updates: any): Partial<ReipeObject> => {
   return {
     name: updates.name,
     ratioConf: {
@@ -38,16 +34,16 @@ const mapUpdateToReceipt = (updates: any): Partial<ReceiptObject> => {
 
 export async function action({ request, params }: ActionFunctionArgs) {
   const formData = await request.formData();
-  const updates = mapUpdateToReceipt(Object.fromEntries(formData));
+  const updates = mapUpdateToRecipe(Object.fromEntries(formData));
 
-  if (params.receiptId) {
-    await updateReceipt(params.receiptId, updates);
-    return redirect(`/receipt/${params.receiptId}`);
+  if (params.recipeId) {
+    await updateRecipe(params.recipeId, updates);
+    return redirect(`/recipe/${params.recipeId}`);
   }
 }
 
 export default function EditContact() {
-  const { receipt } = useLoaderData() as { receipt: ReceiptObject };
+  const { recipe } = useLoaderData() as { recipe: ReipeObject };
   const navigate = useNavigate();
 
   return (
@@ -55,11 +51,11 @@ export default function EditContact() {
       <p>
         <span>Name</span>
         <input
-          placeholder="Receipts name"
+          placeholder="Recipes name"
           aria-label="Name"
           type="text"
           name="name"
-          defaultValue={receipt.name}
+          defaultValue={recipe.name}
         />
       </p>
       <p>
@@ -70,7 +66,7 @@ export default function EditContact() {
           type="number"
           step={0.1}
           name="waterInGroundCoffeeCapacity"
-          defaultValue={receipt.ratioConf.waterInGroundCoffeeCapacity}
+          defaultValue={recipe.ratioConf.waterInGroundCoffeeCapacity}
         />
       </p>
       <p>
@@ -81,7 +77,7 @@ export default function EditContact() {
           type="number"
           step={1}
           name="coffeeG"
-          defaultValue={receipt.ratioConf.relationship.coffeeG}
+          defaultValue={recipe.ratioConf.relationship.coffeeG}
         />
       </p>
       <p>
@@ -92,7 +88,7 @@ export default function EditContact() {
           type="number"
           step={1}
           name="waterMl"
-          defaultValue={receipt.ratioConf.relationship.waterMl}
+          defaultValue={recipe.ratioConf.relationship.waterMl}
         />
       </p>
 
