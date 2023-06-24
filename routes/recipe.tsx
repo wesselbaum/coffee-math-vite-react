@@ -1,34 +1,9 @@
-import {
-  ActionFunctionArgs,
-  Form,
-  Params,
-  useFetcher,
-  useLoaderData,
-} from "react-router-dom";
-import { ReipeObject, getRecipe, updateRecipe } from "../lib/reipeObject.ts";
+import { Form, useFetcher, useLoaderData } from "react-router-dom";
+import { ReipeObject } from "../lib/reipeObject.ts";
 import Calculator from "./Calculator.tsx";
 
 export interface RecipeParams {
   recipeId: string;
-}
-
-export async function loader({ params }: { params: Params<string> }) {
-  if (params) {
-    const typedParams = params as unknown as RecipeParams;
-
-    const recipe = await getRecipe(typedParams.recipeId);
-    return { recipe };
-  }
-  return null;
-}
-
-export async function action({ request, params }: ActionFunctionArgs) {
-  const formData = await request.formData();
-  if (params.recipeId) {
-    return updateRecipe(params.recipeId, {
-      favorite: formData.get("favorite") === "true",
-    });
-  }
 }
 
 export default function Recipe() {

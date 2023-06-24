@@ -1,46 +1,5 @@
-import {
-  ActionFunctionArgs,
-  Form,
-  Params,
-  redirect,
-  useLoaderData,
-  useNavigate,
-} from "react-router-dom";
-import { ReipeObject, getRecipe, updateRecipe } from "../lib/reipeObject.ts";
-import { RecipeParams } from "./recipe.tsx";
-
-export async function loader({ params }: { params: Params<string> }) {
-  if (params) {
-    const typedParams = params as unknown as RecipeParams;
-
-    const recipe = await getRecipe(typedParams.recipeId);
-    return { recipe };
-  }
-  return null;
-}
-
-const mapUpdateToRecipe = (updates: any): Partial<ReipeObject> => {
-  return {
-    name: updates.name,
-    ratioConf: {
-      waterInGroundCoffeeCapacity: updates.waterInGroundCoffeeCapacity,
-      relationship: {
-        waterMl: updates.waterMl,
-        coffeeG: updates.coffeeG,
-      },
-    },
-  };
-};
-
-export async function action({ request, params }: ActionFunctionArgs) {
-  const formData = await request.formData();
-  const updates = mapUpdateToRecipe(Object.fromEntries(formData));
-
-  if (params.recipeId) {
-    await updateRecipe(params.recipeId, updates);
-    return redirect(`/recipe/${params.recipeId}`);
-  }
-}
+import { Form, useLoaderData, useNavigate } from "react-router-dom";
+import { ReipeObject } from "../lib/reipeObject.ts";
 
 export default function EditContact() {
   const { recipe } = useLoaderData() as { recipe: ReipeObject };

@@ -1,18 +1,15 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Root, {
-  loader as rootLoader,
-  action as rootAction,
-} from "./routes/root.tsx";
+import Root from "./routes/root.tsx";
 import ErrorPage from "./error-page.tsx";
-import Recipe, {
-  loader as recipeLoader,
-  action as recipeAction,
-} from "./routes/recipe.tsx";
-import Edit, {
-  loader as editLoader,
-  action as editAction,
-} from "./routes/edit.tsx";
-import { action as destroyAction } from "./routes/destroy.tsx";
+import Recipe from "./routes/recipe.tsx";
+import { recipeLoader, editLoader, rootLoader } from "./routes/loaders.ts";
+import {
+  recipeAction,
+  destroyAction,
+  editAction,
+  rootAction,
+} from "./routes/actions.ts";
+import Edit from "./routes/edit.tsx";
 import Index from "./routes";
 import React from "react";
 import ReactDOM from "react-dom/client";
