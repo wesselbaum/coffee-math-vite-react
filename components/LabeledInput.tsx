@@ -20,6 +20,7 @@ function LabeledInput({ label, id, ...props }: LabeledInputProps) {
           className={props.className}
           onChange={props.onChange}
           id={id}
+          value={props.value}
         />
         <FormLabel>{label}</FormLabel>
         <FormErrorMessage>{label} is invalid</FormErrorMessage>

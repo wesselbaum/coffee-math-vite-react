@@ -15,13 +15,7 @@ function SidebarListLink({ recipe, onClose }: SidebarListLinkProps) {
       }
       onClick={onClose}
     >
-      {recipe.name ? (
-        <>
-          {recipe.name} <small>{recipe.id}</small>
-        </>
-      ) : (
-        <i>Unnamed</i>
-      )}{" "}
+      {recipe.name ? <>{recipe.name}</> : <i>Unnamed</i>}{" "}
       {recipe.favorite && <span>★</span>}
     </NavLink>
   );
