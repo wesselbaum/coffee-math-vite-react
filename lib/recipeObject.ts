@@ -1,4 +1,4 @@
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { addDoc, collection, getDocs, doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { RatioConf } from "coffeemathlib/RatioCalculator";
 import localforage from "localforage";
@@ -17,6 +17,7 @@ export async function getRecipes(query?: string): Promise<RecipeObject[]> {
   await getDocs(RECIPES_REF).then((querySnapshot) => {
     const newData = querySnapshot.docs.map((doc) => ({
       ...doc.data(),
+      id: doc.id,
     }));
     recipes = newData as unknown as RecipeObject[];
   });
@@ -35,9 +36,7 @@ export async function getRecipes(query?: string): Promise<RecipeObject[]> {
 }
 
 export async function createRecipe() {
-  const id = Math.random().toString(36).substring(2, 9);
-  const recipe: RecipeObject = {
-    id,
+  const recipe: Partial<RecipeObject> = {
     favorite: false,
     ratioConf: {
       waterInGroundCoffeeCapacity: 2.2,
@@ -46,12 +45,15 @@ export async function createRecipe() {
     name: "New Recipe",
   };
   const recipes = await getRecipes();
-  recipes.unshift(recipe);
+  // recipes.unshift(recipe);
 
   try {
-    await addDoc(RECIPES_REF, {
+    const resultRecipe = await addDoc(RECIPES_REF, {
       ...recipe,
     });
+    recipe.id = resultRecipe.id;
+    recipes.unshift(recipe as RecipeObject);
+    console.log(`resultRecipe`, resultRecipe);
   } catch (e) {
     console.error("Error adding recipe: ", e);
   }
@@ -62,12 +64,15 @@ export async function createRecipe() {
 }
 
 export async function getRecipe(id: string) {
-  const q = query(RECIPES_REF, where("id", "==", id));
-  const querySnapshot = await getDocs(q);
-  if (querySnapshot.docs.length > 0) {
-    return querySnapshot.docs[0].data();
+  const docRef = doc(RECIPES_REF.firestore, RECIPES_REF.path, id);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    console.log("Document data:", docSnap.data());
+    return { ...docSnap.data(), id: docSnap.id } as RecipeObject;
+  } else {
+    throw new Error(`No recipe with id: ${id}`);
   }
-  throw new Error(`No recipe with id: ${id}`);
 }
 
 export async function updateRecipe(id: string, updates: Partial<RecipeObject>) {
