@@ -1,7 +1,14 @@
-import { addDoc, collection, getDocs, doc, getDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  updateDoc,
+  deleteDoc,
+} from "firebase/firestore";
 import { db } from "../firebase";
 import { RatioConf } from "coffeemathlib/RatioCalculator";
-import localforage from "localforage";
 import { matchSorter } from "match-sorter";
 
 export interface RecipeObject {
@@ -21,12 +28,11 @@ export async function getRecipes(query?: string): Promise<RecipeObject[]> {
     }));
     recipes = newData as unknown as RecipeObject[];
   });
-  recipes.map((r) => {
-    if ("recipe" in r) {
-      return r.recipe as unknown as RecipeObject;
+  recipes.map((recipe) => {
+    if ("recipe" in recipe) {
+      return recipe.recipe as unknown as RecipeObject;
     } else {
-      console.log(`r`, r);
-      return r;
+      return recipe;
     }
   });
   if (query) {
@@ -45,7 +51,6 @@ export async function createRecipe() {
     name: "New Recipe",
   };
   const recipes = await getRecipes();
-  // recipes.unshift(recipe);
 
   try {
     const resultRecipe = await addDoc(RECIPES_REF, {
@@ -53,12 +58,9 @@ export async function createRecipe() {
     });
     recipe.id = resultRecipe.id;
     recipes.unshift(recipe as RecipeObject);
-    console.log(`resultRecipe`, resultRecipe);
   } catch (e) {
     console.error("Error adding recipe: ", e);
   }
-
-  await set(recipes);
 
   return recipe;
 }
@@ -68,7 +70,6 @@ export async function getRecipe(id: string) {
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-    console.log("Document data:", docSnap.data());
     return { ...docSnap.data(), id: docSnap.id } as RecipeObject;
   } else {
     throw new Error(`No recipe with id: ${id}`);
@@ -76,25 +77,12 @@ export async function getRecipe(id: string) {
 }
 
 export async function updateRecipe(id: string, updates: Partial<RecipeObject>) {
-  const recipes = (await localforage.getItem("recipes")) as RecipeObject[];
-  const recipe = recipes.find((recipe) => recipe.id === id);
-  if (!recipe) throw new Error(`No recipe found for ${id}`);
-  Object.assign(recipe, updates);
-  await set(recipes);
-  return recipe;
+  const recipeRef = doc(RECIPES_REF.firestore, RECIPES_REF.path, id);
+  await updateDoc(recipeRef, updates);
 }
 
 export async function deleteRecipe(id: string) {
-  const recipes = (await localforage.getItem("recipes")) as RecipeObject[];
-  const index = recipes.findIndex((recipe) => recipe.id === id);
-  if (index > -1) {
-    recipes.splice(index, 1);
-    await set(recipes);
-    return true;
-  }
-  return false;
-}
-
-function set(recipes: RecipeObject[]) {
-  return localforage.setItem("recipes", recipes);
+  const recipeRef = doc(RECIPES_REF.firestore, RECIPES_REF.path, id);
+  await deleteDoc(recipeRef);
+  return true;
 }
