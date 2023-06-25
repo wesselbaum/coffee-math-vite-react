@@ -79,6 +79,7 @@ export async function getRecipe(id: string) {
 export async function updateRecipe(id: string, updates: Partial<RecipeObject>) {
   const recipeRef = doc(RECIPES_REF.firestore, RECIPES_REF.path, id);
   await updateDoc(recipeRef, updates);
+  return true;
 }
 
 export async function deleteRecipe(id: string) {
