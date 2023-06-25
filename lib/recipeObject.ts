@@ -4,7 +4,7 @@ import { RatioConf } from "coffeemathlib/RatioCalculator";
 import localforage from "localforage";
 import { matchSorter } from "match-sorter";
 
-export interface ReipeObject {
+export interface RecipeObject {
   name: string;
   id: string;
   favorite: boolean;
@@ -12,17 +12,17 @@ export interface ReipeObject {
 }
 const RECIPES_REF = collection(db, "recipes");
 
-export async function getRecipes(query?: string): Promise<ReipeObject[]> {
-  let recipes: ReipeObject[] = [];
+export async function getRecipes(query?: string): Promise<RecipeObject[]> {
+  let recipes: RecipeObject[] = [];
   await getDocs(RECIPES_REF).then((querySnapshot) => {
     const newData = querySnapshot.docs.map((doc) => ({
       ...doc.data(),
     }));
-    recipes = newData as unknown as ReipeObject[];
+    recipes = newData as unknown as RecipeObject[];
   });
   recipes.map((r) => {
     if ("recipe" in r) {
-      return r.recipe as unknown as ReipeObject;
+      return r.recipe as unknown as RecipeObject;
     } else {
       console.log(`r`, r);
       return r;
@@ -31,12 +31,12 @@ export async function getRecipes(query?: string): Promise<ReipeObject[]> {
   if (query) {
     recipes = matchSorter(recipes, query, { keys: ["name"] });
   }
-  return recipes as unknown as ReipeObject[];
+  return recipes as unknown as RecipeObject[];
 }
 
 export async function createRecipe() {
   const id = Math.random().toString(36).substring(2, 9);
-  const recipe: ReipeObject = {
+  const recipe: RecipeObject = {
     id,
     favorite: false,
     ratioConf: {
@@ -70,8 +70,8 @@ export async function getRecipe(id: string) {
   throw new Error(`No recipe with id: ${id}`);
 }
 
-export async function updateRecipe(id: string, updates: Partial<ReipeObject>) {
-  const recipes = (await localforage.getItem("recipes")) as ReipeObject[];
+export async function updateRecipe(id: string, updates: Partial<RecipeObject>) {
+  const recipes = (await localforage.getItem("recipes")) as RecipeObject[];
   const recipe = recipes.find((recipe) => recipe.id === id);
   if (!recipe) throw new Error(`No recipe found for ${id}`);
   Object.assign(recipe, updates);
@@ -80,7 +80,7 @@ export async function updateRecipe(id: string, updates: Partial<ReipeObject>) {
 }
 
 export async function deleteRecipe(id: string) {
-  const recipes = (await localforage.getItem("recipes")) as ReipeObject[];
+  const recipes = (await localforage.getItem("recipes")) as RecipeObject[];
   const index = recipes.findIndex((recipe) => recipe.id === id);
   if (index > -1) {
     recipes.splice(index, 1);
@@ -90,6 +90,6 @@ export async function deleteRecipe(id: string) {
   return false;
 }
 
-function set(recipes: ReipeObject[]) {
+function set(recipes: RecipeObject[]) {
   return localforage.setItem("recipes", recipes);
 }

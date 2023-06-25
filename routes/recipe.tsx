@@ -1,5 +1,5 @@
 import { Form, useFetcher, useLoaderData } from "react-router-dom";
-import { ReipeObject } from "../lib/reipeObject.ts";
+import { RecipeObject } from "../lib/recipeObject.ts";
 import Calculator from "./Calculator.tsx";
 
 export interface RecipeParams {
@@ -7,7 +7,7 @@ export interface RecipeParams {
 }
 
 export default function Recipe() {
-  const { recipe } = useLoaderData() as { recipe: ReipeObject };
+  const { recipe } = useLoaderData() as { recipe: RecipeObject };
 
   return (
     <div id="contact">
@@ -50,7 +50,7 @@ export default function Recipe() {
   );
 }
 
-function Favorite({ recipe }: { recipe: ReipeObject }) {
+function Favorite({ recipe }: { recipe: RecipeObject }) {
   const fetcher = useFetcher();
 
   const favorite = recipe.favorite;

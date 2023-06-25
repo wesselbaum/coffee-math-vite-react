@@ -1,8 +1,8 @@
 import { NavLink } from "react-router-dom";
-import { ReipeObject } from "../../lib/reipeObject.ts";
+import { RecipeObject } from "../../lib/recipeObject.ts";
 
 export interface SidebarListLinkProps {
-  recipe: ReipeObject;
+  recipe: RecipeObject;
   onClose: () => void;
 }
 

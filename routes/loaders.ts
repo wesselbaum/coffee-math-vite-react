@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs, Params } from "react-router-dom";
-import { getRecipe, getRecipes } from "../lib/reipeObject.ts";
+import { getRecipe, getRecipes } from "../lib/recipeObject.ts";
 import { RecipeParams } from "./recipe.tsx";
 
 export async function recipeLoader({ params }: { params: Params<string> }) {

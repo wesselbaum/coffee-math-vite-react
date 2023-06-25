@@ -5,7 +5,7 @@ import {
   useNavigation,
   useSubmit,
 } from "react-router-dom";
-import { ReipeObject } from "../../lib/reipeObject.ts";
+import { RecipeObject } from "../../lib/recipeObject.ts";
 import {
   Button,
   Drawer,
@@ -25,7 +25,7 @@ import SidebarListLink from "./SidebarListLink.tsx";
 
 function Sidebar() {
   const { recipes, q } = useLoaderData() as {
-    recipes: ReipeObject[];
+    recipes: RecipeObject[];
     q: string;
   };
 

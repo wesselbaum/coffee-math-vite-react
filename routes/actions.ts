@@ -2,11 +2,11 @@ import { ActionFunctionArgs, redirect } from "react-router-dom";
 import {
   createRecipe,
   deleteRecipe,
-  ReipeObject,
+  RecipeObject,
   updateRecipe,
-} from "../lib/reipeObject.ts";
+} from "../lib/recipeObject.ts";
 
-const mapUpdateToRecipe = (updates: any): Partial<ReipeObject> => {
+const mapUpdateToRecipe = (updates: any): Partial<RecipeObject> => {
   return {
     name: updates.name,
     ratioConf: {

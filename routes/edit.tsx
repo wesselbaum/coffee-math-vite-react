@@ -1,8 +1,8 @@
 import { Form, useLoaderData, useNavigate } from "react-router-dom";
-import { ReipeObject } from "../lib/reipeObject.ts";
+import { RecipeObject } from "../lib/recipeObject.ts";
 
 export default function EditContact() {
-  const { recipe } = useLoaderData() as { recipe: ReipeObject };
+  const { recipe } = useLoaderData() as { recipe: RecipeObject };
   const navigate = useNavigate();
 
   return (
