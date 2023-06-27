@@ -1,11 +1,12 @@
 import { Outlet } from "react-router-dom";
-import contentStyles from "./Content.module.css";
+// import contentStyles from "./Content.module.css";
+import { Container } from "@chakra-ui/react";
 
 function Detail() {
   return (
-    <div id="detail" className={contentStyles.content}>
+    <Container p={4}>
       <Outlet />
-    </div>
+    </Container>
   );
 }
 

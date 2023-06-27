@@ -1,25 +1,25 @@
 import { Form, useLoaderData, useNavigate } from "react-router-dom";
 import { RecipeObject } from "../lib/recipeObject.ts";
+import LabeledInput from "../components/LabeledInput.tsx";
+import { Box, Button, Flex } from "@chakra-ui/react";
 
 export default function EditContact() {
   const { recipe } = useLoaderData() as { recipe: RecipeObject };
   const navigate = useNavigate();
 
   return (
-    <Form method="post" id="contact-form">
-      <p>
-        <span>Name</span>
-        <input
-          placeholder="Recipes name"
-          aria-label="Name"
-          type="text"
-          name="name"
+    <Box bg={"white"} p={4} borderRadius={10}>
+      <Form method="post" id="contact-form">
+        <LabeledInput
+          label={"Name"}
+          type={"text"}
+          name={"name"}
           defaultValue={recipe.name}
+          pattern="[0-9]+([\.,][0-9]+)?"
+          placeholder={"Recipes name"}
         />
-      </p>
-      <p>
-        <span>Grounds capacity</span>
-        <input
+        <LabeledInput
+          label={"Grounds capacity"}
           placeholder="2.2g"
           aria-label="Water in ground coffee capacity"
           type="number"
@@ -27,10 +27,8 @@ export default function EditContact() {
           name="waterInGroundCoffeeCapacity"
           defaultValue={recipe.ratioConf.waterInGroundCoffeeCapacity}
         />
-      </p>
-      <p>
-        <span>Relationship grounds</span>
-        <input
+        <LabeledInput
+          label={"Relationship grounds"}
           placeholder="1"
           aria-label="Amount of grounds"
           type="number"
@@ -38,10 +36,8 @@ export default function EditContact() {
           name="coffeeG"
           defaultValue={recipe.ratioConf.relationship.coffeeG}
         />
-      </p>
-      <p>
-        <span>to water ml</span>
-        <input
+        <LabeledInput
+          label={"to water ml"}
           placeholder="16"
           aria-label="Amount of Water"
           type="number"
@@ -49,19 +45,27 @@ export default function EditContact() {
           name="waterMl"
           defaultValue={recipe.ratioConf.relationship.waterMl}
         />
-      </p>
 
-      <p>
-        <button type="submit">Save</button>
-        <button
-          type="button"
-          onClick={() => {
-            navigate(-1);
-          }}
+        <Flex
+          justifyContent={"flex-start"}
+          flexDir={"row-reverse"}
+          gap={4}
+          mt={4}
         >
-          Cancel
-        </button>
-      </p>
-    </Form>
+          <Button colorScheme={"green"} type="submit">
+            Save
+          </Button>
+          <Button
+            colorScheme={"gray"}
+            type="button"
+            onClick={() => {
+              navigate(-1);
+            }}
+          >
+            Cancel
+          </Button>
+        </Flex>
+      </Form>
+    </Box>
   );
 }

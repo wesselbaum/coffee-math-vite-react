@@ -1,12 +1,12 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
-  calculateWaterFromCoffee,
-  calculateGroundsFromCoffee,
   calculateCoffeeFromGrounds,
-  calculateWaterFromGrounds,
   calculateCoffeeFromWater,
+  calculateGroundsFromCoffee,
   calculateGroundsFromWater,
+  calculateWaterFromCoffee,
+  calculateWaterFromGrounds,
   RatioConf,
 } from "coffeemathlib/RatioCalculator";
 import LabeledInput from "../components/LabeledInput.tsx";
@@ -88,12 +88,8 @@ function Calculator({ ratioConf }: CalculatorProps) {
       <LabeledInput
         id={"waterAmount"}
         label={"Water"}
-        type={"text"}
         value={waterAmount}
-        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-          onWaterAmountChange(e.currentTarget.value)
-        }
-        pattern="[0-9]+([\.,][0-9]+)?"
+        onChange={(e) => onWaterAmountChange(e.currentTarget.value)}
         placeholder={"ml/g"}
       />
       <LabeledInput

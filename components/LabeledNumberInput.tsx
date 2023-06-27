@@ -3,7 +3,11 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
   NumberInput,
+  NumberInputField,
+  NumberInputStepper,
 } from "@chakra-ui/react";
 
 export type LabeledInputProps = Omit<
@@ -11,25 +15,31 @@ export type LabeledInputProps = Omit<
   "onChange"
 > & {
   label: string;
+  value: string;
   onChange: (value: string) => void;
 };
 
-function LabeledInput({ label, id, ...props }: LabeledInputProps) {
+function LabeledInput({ label, value, id, ...props }: LabeledInputProps) {
   return (
-    <div className={""} style={{ border: "1px solid red" }}>
-      <FormControl variant="floating" isRequired>
+    <div className={""}>
+      <FormControl variant={"floating"} mb={8}>
         <NumberInput
-          placeholder=" "
-          className={props.className}
           onChange={(valueAsString) => {
             if (props.onChange) {
               props.onChange(valueAsString);
             }
           }}
-          id={id}
-        />
-        <FormLabel>{label}</FormLabel>
-        <FormErrorMessage>{label} is invalid</FormErrorMessage>
+          value={value}
+          placeholder={"x"}
+        >
+          <NumberInputField />
+          <FormLabel>{label}</FormLabel>
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+          <FormErrorMessage>{label} is invalid</FormErrorMessage>
+        </NumberInput>
       </FormControl>
     </div>
   );
