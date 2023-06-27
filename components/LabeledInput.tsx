@@ -14,7 +14,7 @@ export interface LabeledInputProps
 function LabeledInput({ label, id, ...props }: LabeledInputProps) {
   return (
     <div className={""}>
-      <FormControl variant="floating" mb={8} isRequired={true}>
+      <FormControl variant="floating" mb={8} isRequired={props.required}>
         <Input
           defaultValue={props.defaultValue}
           placeholder={props.placeholder}
