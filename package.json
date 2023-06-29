@@ -12,16 +12,19 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.0.19",
     "@chakra-ui/react": "^2.7.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "coffeemathlib": "^1.1.0",
     "firebase": "^9.22.2",
+    "firebaseui": "^6.0.2",
     "framer-motion": "^10.12.16",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-redux": "^8.1.1",
     "react-router-dom": "^6.11.2",
     "sort-by": "^1.2.0"
   },
