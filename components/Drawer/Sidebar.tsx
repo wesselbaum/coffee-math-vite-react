@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import {
   Form,
+  Link,
   useLoaderData,
   useNavigation,
   useSubmit,
@@ -22,6 +23,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import SidebarListLink from "./SidebarListLink.tsx";
+import { HamburgerIcon } from "@chakra-ui/icons";
 
 function Sidebar() {
   const { recipes, q } = useLoaderData() as {
@@ -46,7 +48,7 @@ function Sidebar() {
   return (
     <>
       <Button m={4} ref={btnRef} colorScheme="teal" onClick={onOpen}>
-        Recipes
+        <HamburgerIcon />
       </Button>
 
       <Drawer
@@ -108,6 +110,7 @@ function Sidebar() {
                 New Recipe
               </Button>
             </Form>
+            <Link to={"/auth/"}>Login</Link>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>

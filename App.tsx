@@ -15,6 +15,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import "./firebase.ts";
+import Login from "./routes/login.tsx";
 
 const router = createHashRouter([
   {
@@ -28,6 +29,10 @@ const router = createHashRouter([
         errorElement: <ErrorPage />,
         children: [
           { index: true, element: <Index /> },
+          {
+            element: <Login />,
+            path: "/auth/",
+          },
           {
             element: <Recipe />,
             loader: recipeLoader,

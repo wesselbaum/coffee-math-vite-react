@@ -6,6 +6,8 @@ import {
   persistentLocalCache,
   persistentMultipleTabManager,
 } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
@@ -29,5 +31,7 @@ initializeFirestore(app, {
     /*settings*/ { tabManager: persistentMultipleTabManager() }
   ),
 });
+
+export const auth = getAuth(app);
 
 export const db = getFirestore(app);

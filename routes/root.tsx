@@ -1,6 +1,6 @@
 import Content from "../components/Content/Content.tsx";
-import Sidebar from "../components/Drawer/Sidebar.tsx";
-import { Box, Grid } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
+import TopBar from "../components/TopBar/TopBar.tsx";
 
 export default function Root() {
   return (
@@ -10,10 +10,8 @@ export default function Root() {
         minHeight={"100dvh"}
         sx={{ scrollbarGutter: "stable" }}
       >
-        <Grid gridTemplateColumns={{ base: "1fr", md: "200px 1fr" }}>
-          <Sidebar />
-          <Content />
-        </Grid>
+        <TopBar />
+        <Content />
       </Box>
     </>
   );
