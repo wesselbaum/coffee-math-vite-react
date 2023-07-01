@@ -2,11 +2,11 @@ import { createHashRouter, RouterProvider } from "react-router-dom";
 import Root from "./routes/root.tsx";
 import ErrorPage from "./error-page.tsx";
 import Recipe from "./routes/recipe.tsx";
-import { recipeLoader, editLoader, rootLoader } from "./routes/loaders.ts";
+import { editLoader, recipeLoader, rootLoader } from "./routes/loaders.ts";
 import {
-  recipeAction,
   destroyAction,
   editAction,
+  recipeAction,
   rootAction,
 } from "./routes/actions.ts";
 import Edit from "./routes/edit.tsx";
@@ -15,7 +15,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import "./firebase.ts";
-import Login from "./routes/login.tsx";
+import Login from "./routes/Login.tsx";
+import { UserProvider } from "./UserContext.tsx";
 
 const router = createHashRouter([
   {
@@ -55,8 +56,13 @@ const router = createHashRouter([
     ],
   },
 ]);
+
 const App = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <UserProvider>
+      <RouterProvider router={router} />
+    </UserProvider>
+  );
 };
 
 const colors = {
@@ -108,7 +114,9 @@ theme = extendTheme({
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
+      {/*<UserContext.Provider value={"username"}>*/}
       <App />
+      {/*</UserContext.Provider>*/}
     </ChakraProvider>
   </React.StrictMode>
 );

@@ -6,7 +6,11 @@ import {
   persistentLocalCache,
   persistentMultipleTabManager,
 } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import {
+  getAuth,
+  setPersistence,
+  browserSessionPersistence,
+} from "firebase/auth";
 
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -33,5 +37,6 @@ initializeFirestore(app, {
 });
 
 export const auth = getAuth(app);
+setPersistence(auth, browserSessionPersistence);
 
 export const db = getFirestore(app);

@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 import {
   Form,
-  Link,
   useLoaderData,
   useNavigation,
   useSubmit,
@@ -110,7 +109,6 @@ function Sidebar() {
                 New Recipe
               </Button>
             </Form>
-            <Link to={"/auth/"}>Login</Link>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
