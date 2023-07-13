@@ -11,6 +11,8 @@ export default function ErrorPage() {
     message = error.message;
   }
 
+  console.error(error);
+
   return (
     <div id="error-page">
       <h1>Oops!</h1>

@@ -6,12 +6,15 @@ import {
   getDoc,
   updateDoc,
   deleteDoc,
+  query,
+  where,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { RatioConf } from "coffeemathlib/RatioCalculator";
 import { matchSorter } from "match-sorter";
 
 export interface RecipeObject {
+  creatorId: string;
   name: string;
   id: string;
   favorite: boolean;
@@ -19,14 +22,27 @@ export interface RecipeObject {
 }
 const RECIPES_REF = collection(db, "recipes");
 
-export async function getRecipes(query?: string): Promise<RecipeObject[]> {
+export async function getRecipes(
+  queryString?: string
+): Promise<RecipeObject[]> {
   let recipes: RecipeObject[] = [];
+  const q = query(
+    RECIPES_REF,
+    where("creatorID", "==", "ZHofiy9xRBNnBqyLfFN7ceW9HWA2")
+  );
+  /*
   await getDocs(RECIPES_REF).then((querySnapshot) => {
     const newData = querySnapshot.docs.map((doc) => ({
       ...doc.data(),
       id: doc.id,
     }));
     recipes = newData as unknown as RecipeObject[];
+  });
+*/
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    console.log(doc.id, " => ", doc.data());
   });
   recipes.map((recipe) => {
     if ("recipe" in recipe) {
@@ -35,14 +51,15 @@ export async function getRecipes(query?: string): Promise<RecipeObject[]> {
       return recipe;
     }
   });
-  if (query) {
-    recipes = matchSorter(recipes, query, { keys: ["name"] });
+  if (queryString) {
+    recipes = matchSorter(recipes, queryString, { keys: ["name"] });
   }
   return recipes as unknown as RecipeObject[];
 }
 
-export async function createRecipe() {
+export async function createRecipe(creatorId: string) {
   const recipe: Partial<RecipeObject> = {
+    creatorId,
     favorite: false,
     ratioConf: {
       waterInGroundCoffeeCapacity: 2.2,

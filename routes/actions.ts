@@ -45,7 +45,10 @@ export async function editAction({ request, params }: ActionFunctionArgs) {
   }
 }
 
-export async function rootAction() {
-  const recipe = await createRecipe();
+export async function rootAction({ request }: ActionFunctionArgs) {
+  const formData = await request.formData();
+  const recipe = await createRecipe(
+    (Object.fromEntries(formData)["userID"] as string) ?? ""
+  );
   return redirect(`recipe/${recipe.id}/edit`);
 }

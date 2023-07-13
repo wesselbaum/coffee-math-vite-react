@@ -23,12 +23,15 @@ import {
 } from "@chakra-ui/react";
 import SidebarListLink from "./SidebarListLink.tsx";
 import { HamburgerIcon } from "@chakra-ui/icons";
+import { useUser } from "../../UserContext.tsx";
 
 function Sidebar() {
   const { recipes, q } = useLoaderData() as {
     recipes: RecipeObject[];
     q: string;
   };
+
+  const user = useUser();
 
   const navigation = useNavigation();
   const searchRef = useRef<HTMLInputElement>();
@@ -100,6 +103,7 @@ function Sidebar() {
           </DrawerBody>
           <DrawerFooter>
             <Form method="post">
+              <input type={"hidden"} name={"userID"} value={user?.uid} />
               <Button
                 marginY={"4"}
                 colorScheme="blue"
