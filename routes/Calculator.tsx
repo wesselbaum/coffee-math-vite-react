@@ -27,6 +27,10 @@ const numberToStringOrEmpty = (num: number): string => {
   return num.toFixed(2);
 };
 
+const stringToFloat = (val: string): number => {
+  return parseFloat(val.replace(",", "."));
+};
+
 function Calculator({ ratioConf }: CalculatorProps) {
   const [waterAmount, setWaterAmount] = useState<string>("");
   const [coffeeAmount, setCoffeeAmount] = useState<string>("");
@@ -44,12 +48,12 @@ function Calculator({ ratioConf }: CalculatorProps) {
     setCoffeeAmount(value);
     setWaterAmount(
       numberToStringOrEmpty(
-        calculateWaterFromCoffee(parseInt(value), definitiveRatioConf)
+        calculateWaterFromCoffee(stringToFloat(value), definitiveRatioConf)
       )
     );
     setGroundsAmount(
       numberToStringOrEmpty(
-        calculateGroundsFromCoffee(parseInt(value), definitiveRatioConf)
+        calculateGroundsFromCoffee(stringToFloat(value), definitiveRatioConf)
       )
     );
   };
@@ -58,12 +62,12 @@ function Calculator({ ratioConf }: CalculatorProps) {
     setWaterAmount(value);
     setCoffeeAmount(
       numberToStringOrEmpty(
-        calculateCoffeeFromWater(parseInt(value), definitiveRatioConf)
+        calculateCoffeeFromWater(stringToFloat(value), definitiveRatioConf)
       )
     );
     setGroundsAmount(
       numberToStringOrEmpty(
-        calculateGroundsFromWater(parseInt(value), definitiveRatioConf)
+        calculateGroundsFromWater(stringToFloat(value), definitiveRatioConf)
       )
     );
   };
@@ -73,12 +77,12 @@ function Calculator({ ratioConf }: CalculatorProps) {
 
     setCoffeeAmount(
       numberToStringOrEmpty(
-        calculateCoffeeFromGrounds(parseInt(value), definitiveRatioConf)
+        calculateCoffeeFromGrounds(stringToFloat(value), definitiveRatioConf)
       )
     );
     setWaterAmount(
       numberToStringOrEmpty(
-        calculateWaterFromGrounds(parseInt(value), definitiveRatioConf)
+        calculateWaterFromGrounds(stringToFloat(value), definitiveRatioConf)
       )
     );
   };
