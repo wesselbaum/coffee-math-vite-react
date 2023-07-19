@@ -28,33 +28,36 @@ export async function getRecipes(
   let recipes: RecipeObject[] = [];
   const q = query(
     RECIPES_REF,
-    where("creatorID", "==", "ZHofiy9xRBNnBqyLfFN7ceW9HWA2")
+    where("creatorId", "==", "ZHofiy9xRBNnBqyLfFN7ceW9HWA2")
   );
-  /*
-  await getDocs(RECIPES_REF).then((querySnapshot) => {
-    const newData = querySnapshot.docs.map((doc) => ({
-      ...doc.data(),
-      id: doc.id,
-    }));
-    recipes = newData as unknown as RecipeObject[];
-  });
-*/
-  const querySnapshot = await getDocs(q);
-  querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    console.log(doc.id, " => ", doc.data());
-  });
-  recipes.map((recipe) => {
-    if ("recipe" in recipe) {
-      return recipe.recipe as unknown as RecipeObject;
-    } else {
-      return recipe;
+
+  console.log(`1`);
+
+  try {
+    await getDocs(q).then((querySnapshot) => {
+      const newData = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      recipes = newData as unknown as RecipeObject[];
+    });
+
+    console.log(`2`);
+    recipes.map((recipe) => {
+      if ("recipe" in recipe) {
+        return recipe.recipe as unknown as RecipeObject;
+      } else {
+        return recipe;
+      }
+    });
+    if (queryString) {
+      recipes = matchSorter(recipes, queryString, { keys: ["name"] });
     }
-  });
-  if (queryString) {
-    recipes = matchSorter(recipes, queryString, { keys: ["name"] });
+    return recipes as unknown as RecipeObject[];
+  } catch (e: unknown) {
+    console.error(e);
+    return recipes;
   }
-  return recipes as unknown as RecipeObject[];
 }
 
 export async function createRecipe(creatorId: string) {
